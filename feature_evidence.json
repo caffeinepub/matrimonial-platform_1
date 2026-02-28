@@ -1,0 +1,211 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-user-registration-with-mandatory-phone-number-field-and-mock-otp-phone-verification-if-phone-number-is-not-provided-registration-must-be-blocked-optional-email-field-with-mock-email-otp-if-provided-mock-otp-should-always-be-123456-for-testing",
+      "featureTitle": "Implement user registration with mandatory phone number field and mock OTP phone verification. If phone number is not provided, registration must be blocked. Optional email field with mock email OTP if provided. Mock OTP should always be '123456' for testing.",
+      "files": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/RegisterPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "invite-links@3.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-detailed-user-profile-system-with-the-following-sections-personal-details-full-name-gender-date-of-birth-with-auto-age-calculation-height-weight-religion-caste-sub-caste-gotra-mother-tongue-marital-status-state-district-city-manglik-status-education-job-qualification-job-type-company-position-work-location-monthly-salary-annual-income-family-details-father-name-occupation-income-phone-mother-name-occupation-income-phone-number-of-brothers-number-of-sisters-family-type-family-status-and-an-optional-horoscope-file-upload-store-all-fields-in-the-backend",
+      "featureTitle": "Build a detailed user profile system with the following sections: Personal Details (full name, gender, date of birth with auto age calculation, height, weight, religion, caste, sub-caste, gotra, mother tongue, marital status, state/district/city, manglik status); Education & Job (qualification, job type, company, position, work location, monthly salary, annual income); Family Details (father name/occupation/income/phone, mother name/occupation/income/phone, number of brothers, number of sisters, family type, family status); and an optional horoscope file upload. Store all fields in the backend.",
+      "files": [
+        "frontend/src/components/dashboard/ProfileSection.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/lib/localStorage.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "invite-links@3.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-photo-upload-system-requiring-a-minimum-of-4-photos-before-a-profile-becomes-visible-to-other-users-apply-client-side-image-compression-on-upload-profile-browsability-must-be-gated-on-having-at-least-4-uploaded-and-approved-photos-users-should-be-able-to-upload-view-and-delete-their-own-photos",
+      "featureTitle": "Implement a photo upload system requiring a minimum of 4 photos before a profile becomes visible to other users. Apply client-side image compression on upload. Profile browsability must be gated on having at least 4 uploaded and approved photos. Users should be able to upload, view, and delete their own photos.",
+      "files": [
+        "frontend/src/components/admin/CandidatesManagement.tsx",
+        "frontend/src/components/dashboard/ProfileSection.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/lib/localStorage.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "invite-links@3.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-an-ai-compatibility-scoring-engine-in-the-backend-that-computes-a-compatibility-percentage-between-two-users-based-on-age-compatibility-religion-caste-match-gotra-compatibility-horoscope-match-availability-location-preference-education-level-income-compatibility-and-family-background-the-backend-must-return-ranked-match-suggestions-for-each-user-sorted-by-compatibility-score-descending",
+      "featureTitle": "Build an AI compatibility scoring engine in the backend that computes a compatibility percentage between two users based on: age compatibility, religion & caste match, gotra compatibility, horoscope match availability, location preference, education level, income compatibility, and family background. The backend must return ranked match suggestions for each user sorted by compatibility score descending.",
+      "files": [
+        "frontend/src/components/dashboard/MatchesSection.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/lib/localStorage.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "invite-links@3.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-16"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-like-reject-system-where-users-can-like-or-reject-profile-suggestions-shown-in-the-matches-section-when-two-users-have-mutually-liked-each-other-a-match-is-created-both-users-should-see-the-match-appear-in-their-matched-users-list-previously-rejected-profiles-should-not-reappear-in-suggestions",
+      "featureTitle": "Implement a Like/Reject system where users can like or reject profile suggestions shown in the matches section. When two users have mutually liked each other, a Match is created. Both users should see the match appear in their matched users list. Previously rejected profiles should not reappear in suggestions.",
+      "files": [
+        "frontend/src/components/dashboard/MatchesSection.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/lib/localStorage.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "invite-links@3.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-17"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-payment-gated-chat-after-a-mutual-match-display-a-payment-prompt-requiring-each-user-to-pay-200-via-mock-upi-to-unlock-the-chat-support-mock-upi-ids-8456916064-ybl-and-6370081492-ybl-chat-is-enabled-only-after-both-users-have-completed-payment-store-all-transaction-records-with-payment-status-and-display-them-in-the-user-s-payment-history-section",
+      "featureTitle": "Implement payment-gated chat: after a mutual match, display a payment prompt requiring each user to pay ₹200 via mock UPI to unlock the chat. Support mock UPI IDs 8456916064@ybl and 6370081492@ybl. Chat is enabled only after both users have completed payment. Store all transaction records with payment status and display them in the user's payment history section.",
+      "files": [
+        "frontend/src/components/admin/PaymentMonitoring.tsx",
+        "frontend/src/components/dashboard/ChatsSection.tsx",
+        "frontend/src/components/dashboard/PaymentsSection.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/lib/localStorage.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "invite-links@3.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-18"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-secure-chat-system-for-matched-and-payment-verified-users-implement-auto-lock-logic-if-a-sent-message-is-detected-to-contain-a-phone-number-upi-id-or-email-address-instantly-lock-the-chat-thread-display-a-warning-to-the-sender-and-create-an-admin-notification-the-notification-must-not-include-the-message-content-only-metadata-user-ids-timestamp-reason-admin-sees-locked-chat-entries-in-the-locked-chats-monitor-without-any-message-text",
+      "featureTitle": "Build a secure chat system for matched and payment-verified users. Implement auto-lock logic: if a sent message is detected to contain a phone number, UPI ID, or email address, instantly lock the chat thread, display a warning to the sender, and create an admin notification. The notification must not include the message content — only metadata (user IDs, timestamp, reason). Admin sees locked chat entries in the Locked Chats Monitor without any message text.",
+      "files": [
+        "frontend/src/components/admin/LockedChatsMonitor.tsx",
+        "frontend/src/components/dashboard/ChatsSection.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/lib/localStorage.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "invite-links@3.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-19"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-phone-number-privacy-enforcement-all-candidate-phone-numbers-must-be-blurred-hidden-in-the-ui-and-never-returned-in-plain-text-from-the-backend-by-default-phone-numbers-are-revealed-only-after-the-requesting-user-has-made-an-approved-payment-for-the-view-candidate-phone-number-service-250-backend-must-enforce-authorization-before-returning-plain-text-phone-numbers",
+      "featureTitle": "Implement phone number privacy enforcement: all candidate phone numbers must be blurred/hidden in the UI and never returned in plain text from the backend by default. Phone numbers are revealed only after the requesting user has made an approved payment for the 'View Candidate Phone Number' service (₹250). Backend must enforce authorization before returning plain-text phone numbers.",
+      "files": [
+        "frontend/src/components/admin/CandidatesManagement.tsx",
+        "frontend/src/components/dashboard/MatchesSection.tsx",
+        "frontend/src/components/dashboard/ProfileSection.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/lib/localStorage.ts",
+        "frontend/src/lib/utils.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "invite-links@3.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-20"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

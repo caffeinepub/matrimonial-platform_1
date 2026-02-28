@@ -1,0 +1,265 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Frontend implementation for OTP verification, detailed profiles, photo uploads, AI scoring, like/match, payment-gated chat, encrypted chat, and phone privacy",
+  "requirements": [
+    {
+      "id": "REQ-13",
+      "summary": "Implement user registration with mandatory phone number field and mock OTP phone verification (123456)",
+      "acceptanceCriteria": [
+        "Registration form requires a phone number field; submitting without it shows an error and blocks progression",
+        "A mock OTP (123456) is sent to the provided phone number and must be verified before completing registration",
+        "If an optional email is provided, a mock email OTP (123456) is also requested and must be verified",
+        "Users who skip phone number cannot proceed past step 1 of registration"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/RegisterPage.tsx",
+          "operation": "modify",
+          "description": "Add phone number field validation to step 1 that blocks progression if empty. Add OTP input field that appears after phone number entry. Implement mock OTP verification logic that only accepts '123456' for both phone and email. Add optional email field with conditional OTP verification. Ensure form cannot advance past step 1 without valid phone and verified OTP."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add useSendPhoneOTP and useVerifyPhoneOTP hooks that simulate OTP sending and verification. Add useSendEmailOTP and useVerifyEmailOTP hooks for optional email verification. All verify hooks should check for '123456' as the valid code."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Build detailed user profile system with Personal Details, Education & Job, Family Details, and optional horoscope upload sections",
+      "acceptanceCriteria": [
+        "Profile editing form in the user dashboard exposes all Personal Details fields with auto-calculated age from date of birth",
+        "Education & Job section captures qualification, job type, company, position, work location, monthly salary, and annual income",
+        "Family Details section captures father/mother details including phone, number of brothers/sisters, family type, and family status",
+        "Optional horoscope file upload is available and stored securely",
+        "All saved profile data persists across sessions and is retrievable from the backend"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/localStorage.ts",
+          "operation": "modify",
+          "description": "Extend UserProfile interface to include all required fields: Personal Details (fullName, gender, dateOfBirth, age, height, weight, religion, caste, subCaste, gotra, motherTongue, maritalStatus, state, district, city, manglikStatus), Education & Job (qualification, jobType, company, position, workLocation, monthlySalary, annualIncome), Family Details (fatherName, fatherOccupation, fatherIncome, fatherPhone, motherName, motherOccupation, motherIncome, motherPhone, numberOfBrothers, numberOfSisters, familyType, familyStatus), and horoscopeFile (optional ExternalBlob reference). Update store utilities to handle all new fields."
+        },
+        {
+          "path": "frontend/src/components/dashboard/ProfileSection.tsx",
+          "operation": "modify",
+          "description": "Expand profile editing form into three collapsible/tabbed sections: Personal Details with all fields including date picker for DOB and auto-calculated age display; Education & Job section with dropdowns for qualification/jobType and text inputs for company/position/location/salary/income; Family Details section with parent info inputs including phone fields, number selects for siblings, and family type/status dropdowns. Add horoscope file upload widget. Implement form validation for all mandatory fields. Wire save action to useSaveUserProfile hook."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Update useSaveUserProfile mutation to persist all extended profile fields to backend. Ensure useGetUserProfile query returns complete profile with all new fields."
+        }
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "summary": "Implement photo upload system requiring minimum 4 photos with client-side compression before profile becomes visible",
+      "acceptanceCriteria": [
+        "Users can upload photos from the profile section; uploaded images are compressed client-side before storage",
+        "A clear indicator shows how many photos have been uploaded out of the required 4 minimum",
+        "Profiles with fewer than 4 photos are not shown in match suggestions to other users",
+        "Users can delete their own photos; if deletion drops count below 4, profile is hidden from browsing again",
+        "Admin can see all uploaded photos when reviewing candidate profiles"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/dashboard/ProfileSection.tsx",
+          "operation": "modify",
+          "description": "Add a photo upload section displaying current uploaded photos in a grid. Show a clear indicator like 'Photos: 3/4 (1 more required)'. Add an upload button that triggers file input for image selection. On file selection, use the imageCompression utility to compress the image client-side before calling useUploadPhoto mutation. Display thumbnail previews of uploaded photos with delete buttons. After photo count reaches 4, show a success message indicating profile is now visible to others. Use ExternalBlob.fromBytes to create blob objects from compressed image data and add upload progress tracking via withUploadProgress method. Reference images using workspace paths like frontend/public/assets/generated/<filename>.dim_WIDTHxHEIGHT.png for any generated placeholder images if needed."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add useUploadPhoto mutation that accepts compressed Uint8Array and uploads via backend. Add useDeletePhoto mutation for removing photos. Add useGetUserPhotos query to fetch current user's photo list. Update useGetMatches query to filter out profiles with fewer than 4 photos."
+        },
+        {
+          "path": "frontend/src/lib/localStorage.ts",
+          "operation": "modify",
+          "description": "Add Photo interface with id, userId, blobReference (ExternalBlob), uploadedAt, and approved fields. Add photoStore utilities for CRUD operations on photos."
+        },
+        {
+          "path": "frontend/src/components/admin/CandidatesManagement.tsx",
+          "operation": "modify",
+          "description": "In the view-profile dialog, display all uploaded photos for the selected candidate with approval status. Add approve/reject buttons for each photo if not already approved."
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "Build frontend for AI compatibility scoring display showing ranked match suggestions sorted by compatibility score",
+      "acceptanceCriteria": [
+        "Backend exposes a query that returns a ranked list of compatible profiles for the calling user",
+        "Each result includes a compatibility score (0–100%) computed from the defined factors",
+        "Match suggestions in the user dashboard display the compatibility percentage prominently on each match card",
+        "Profiles are sorted by compatibility score, highest first",
+        "Gotra incompatibility (same gotra) reduces the score significantly"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/dashboard/MatchesSection.tsx",
+          "operation": "modify",
+          "description": "Update match suggestion cards to prominently display compatibility percentage badge/score (e.g., '87% Match'). Ensure cards are rendered in descending order by compatibility score. Add visual indicators like color coding (green for high compatibility, yellow for medium, orange for low). Display a brief breakdown or tooltip showing which factors contributed to the score (age, religion, location, etc.)."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Update useGetMatches query to call backend capability that returns ranked profiles with compatibility scores. Ensure the returned data includes score field (0-100) for each match. Sort results by score descending before returning to UI."
+        },
+        {
+          "path": "frontend/src/lib/localStorage.ts",
+          "operation": "modify",
+          "description": "Add compatibilityScore field (number 0-100) to the Match interface to store the computed score for each match."
+        }
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "summary": "Implement Like/Reject system where mutual likes create a Match, with rejected profiles not reappearing",
+      "acceptanceCriteria": [
+        "Like and Reject buttons are present on each match suggestion card",
+        "Liking a user who has already liked you creates a mutual match and both users see it in their matches list",
+        "Rejected profiles do not reappear in the suggestions list",
+        "Match creation is persisted in the backend",
+        "Users can view their list of mutual matches in the dashboard"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/dashboard/MatchesSection.tsx",
+          "operation": "modify",
+          "description": "Add Like (heart icon) and Reject (X icon) buttons to each match suggestion card. Wire Like button to useLikeProfile mutation and Reject button to useRejectProfile mutation. On successful like, check if mutual match was created and show a celebratory notification/modal if so. Filter out rejected profiles from suggestions list. Display mutual matches in a separate section with match date and compatibility score."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add useLikeProfile mutation that sends like action to backend and returns whether a mutual match was created. Add useRejectProfile mutation that marks profile as rejected. Update useGetMatches query to exclude rejected profiles from suggestions. Add useGetMutualMatches query to fetch list of confirmed mutual matches."
+        },
+        {
+          "path": "frontend/src/lib/localStorage.ts",
+          "operation": "modify",
+          "description": "Update Like interface to include status field (pending/mutual). Update Match interface to include matchedAt timestamp. Add rejectedProfiles array to store rejected user IDs per user."
+        }
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "summary": "Implement payment-gated chat requiring ₹200 payment from both users via mock UPI (8456916064@ybl or 6370081492@ybl) before unlocking chat",
+      "acceptanceCriteria": [
+        "Matched users who have not paid see a payment prompt with the ₹200 amount and mock UPI IDs displayed",
+        "After a user completes mock payment, their payment is recorded as pending/confirmed in the backend",
+        "Chat interface is unlocked and visible only after both matched users have paid",
+        "Transaction history shows payment amount, date, status, and counterpart for each payment",
+        "Admin payment monitoring dashboard reflects new ₹200 chat unlock transactions"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/dashboard/ChatsSection.tsx",
+          "operation": "modify",
+          "description": "Add payment gate logic: for each mutual match, check if both users have paid ₹200 for chat unlock. If current user hasn't paid, display payment prompt showing '₹200 required to unlock chat' with mock UPI IDs (8456916064@ybl and 6370081492@ybl). Add a mock payment button that simulates UPI payment and calls useSubmitChatUnlockPayment mutation. If current user paid but counterpart hasn't, show waiting message 'Waiting for [Name] to complete payment'. Only show chat interface when both users have paid. Display payment status indicators for each match."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add useSubmitChatUnlockPayment mutation that records a ₹200 payment for chat unlock service with matchId. Add useGetChatUnlockStatus query that checks if both users in a match have paid. Update useGetPayments query to include chat unlock transactions."
+        },
+        {
+          "path": "frontend/src/lib/localStorage.ts",
+          "operation": "modify",
+          "description": "Add chatUnlockPayments map to store payment records per match. Update Payment interface to include serviceType field ('chat-unlock', 'phone-reveal') and matchId/candidateId references."
+        },
+        {
+          "path": "frontend/src/components/admin/PaymentMonitoring.tsx",
+          "operation": "modify",
+          "description": "Update statistics section to separately count and display chat unlock payments (₹200 each). Add service type filter to transaction table showing 'Chat Unlock' entries."
+        },
+        {
+          "path": "frontend/src/components/dashboard/PaymentsSection.tsx",
+          "operation": "modify",
+          "description": "Update transaction table to show service type column distinguishing chat unlock (₹200) from phone reveal (₹250) payments. Display counterpart name for chat unlock transactions."
+        }
+      ]
+    },
+    {
+      "id": "REQ-19",
+      "summary": "Build secure chat system with auto-lock logic detecting phone numbers, UPI IDs, or emails, creating metadata-only admin notifications",
+      "acceptanceCriteria": [
+        "Chat UI is only accessible to users who are both mutually matched and have both paid ₹200",
+        "Messages are sent and displayed in real time (polling-based acceptable) within the chat thread",
+        "Client-side contact detection flags messages containing phone numbers, UPI IDs, or emails before send",
+        "When contact details are detected, the message is blocked, chat is locked, a warning is shown to the user, and an admin notification record is created",
+        "Admin Locked Chats Monitor shows locked chat entries with metadata only — zero message content visible"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/dashboard/ChatsSection.tsx",
+          "operation": "modify",
+          "description": "Guard chat interface to only render when useGetChatUnlockStatus confirms both users paid. Implement message list displaying sent/received messages with timestamps and sender indicators. Add message input field with send button. Before sending, use contactDetection utility to scan message text for phone numbers, UPI IDs, or emails. If contact info detected, block send, show warning modal explaining policy violation, lock the chat thread immediately by calling useLockChat mutation, and display 'Chat locked due to policy violation' message. If no contact info, send via useSendMessage mutation. Implement polling (every 3-5 seconds) via useGetMessages query with refetchInterval to fetch new messages. Show locked chat indicator if chat is locked."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add useSendMessage mutation that sends message text to backend after passing contact detection. Add useGetMessages query with polling enabled (refetchInterval: 5000) to fetch message history for a match. Add useLockChat mutation that locks a chat thread and creates admin notification with metadata (userIds, timestamp, reason) but zero message content. Add useGetLockedChats query for admin to fetch locked chat metadata."
+        },
+        {
+          "path": "frontend/src/lib/localStorage.ts",
+          "operation": "modify",
+          "description": "Update Message interface to include matchId, senderId, receiverId, text, sentAt, and isLocked fields. Add LockedChat interface with matchId, participantIds, lockedAt, reason, and explicitly no messageContent field. Add messageStore and lockedChatStore utilities."
+        },
+        {
+          "path": "frontend/src/components/admin/LockedChatsMonitor.tsx",
+          "operation": "modify",
+          "description": "Update to display locked chat entries showing only metadata: participant names/IDs, lock timestamp, and lock reason (e.g., 'Contact info detected'). Explicitly show zero message content with a note 'Message content is private and not accessible to admin'. Add unlock button that calls useUnlockChat mutation to restore chat access."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add useUnlockChat mutation for admin to unlock a previously locked chat thread."
+        }
+      ]
+    },
+    {
+      "id": "REQ-20",
+      "summary": "Implement phone number privacy enforcement: blur phone numbers by default, reveal only after ₹250 payment authorization",
+      "acceptanceCriteria": [
+        "Phone numbers appear blurred (e.g., '98XXXXXX12') in all match cards and profile views by default",
+        "A 'View Phone Number - ₹250' button is displayed next to blurred numbers",
+        "After mock payment of ₹250 is confirmed, the backend returns the plain-text phone number for that specific candidate only",
+        "Backend rejects plain-text phone number requests from users who have not paid for that specific candidate",
+        "Admin dashboard continues to show full plain-text phone numbers regardless (admin privilege)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/dashboard/MatchesSection.tsx",
+          "operation": "modify",
+          "description": "Display phone numbers in blurred format (e.g., '98XXXXXX12') by default on match cards. Add a 'View Phone Number - ₹250' button next to blurred phone. On click, show payment confirmation dialog with mock UPI IDs (8456916064@ybl, 6370081492@ybl). After user confirms mock payment, call useRevealPhoneNumber mutation with candidateId. On success, replace blurred phone with plain-text number returned from backend. Store revealed status per candidate to avoid repeated payment requests."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add useRevealPhoneNumber mutation that submits ₹250 payment for a specific candidateId and retrieves plain-text phone number from backend. Add useGetRevealedPhones query to check which candidates' phones have been revealed to current user."
+        },
+        {
+          "path": "frontend/src/lib/localStorage.ts",
+          "operation": "modify",
+          "description": "Add revealedPhones map to track which candidateIds have had their phone numbers revealed to each user after payment. Update Payment interface to support 'phone-reveal' service type with ₹250 amount."
+        },
+        {
+          "path": "frontend/src/components/admin/CandidatesManagement.tsx",
+          "operation": "modify",
+          "description": "Admin view should always display full plain-text phone numbers without blurring or payment gates. Ensure admin queries bypass phone privacy restrictions."
+        },
+        {
+          "path": "frontend/src/components/dashboard/ProfileSection.tsx",
+          "operation": "modify",
+          "description": "When viewing own profile, show phone number in plain text (user can always see their own data). When viewing other profiles from matches section, apply blurring and payment gate logic."
+        },
+        {
+          "path": "frontend/src/lib/utils.ts",
+          "operation": "create",
+          "description": "Create utility function blurPhoneNumber that takes a phone string and returns blurred version showing first 2 and last 2 digits with X's in between (e.g., '9876543210' becomes '98XXXXXX10'). Export for use in match cards and profile views."
+        }
+      ]
+    }
+  ]
+}

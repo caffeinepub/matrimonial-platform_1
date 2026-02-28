@@ -1,0 +1,242 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "Privacy-focused AI-powered matrimonial platform with React + Motoko (Internet Computer) stack. Features: verified user profiles with privacy protection, AI compatibility scoring, payment-gated chat (₹200), admin/mediator dashboard, encrypted real-time chat, OTP phone verification, photo uploads, like/match system, and smart match service charges. Admin cannot read private chats. Single pre-seeded admin account.",
+  "architectural_notes": [
+    "Tech stack: React + TypeScript (Vite) frontend, Motoko backend on Internet Computer, Tailwind CSS",
+    "Admin account pre-seeded via seed script; admin self-registration NOT allowed",
+    "Chat messages must be end-to-end encrypted; admin has zero access to message content",
+    "Phone numbers always blurred/hidden until payment is verified via backend logic",
+    "Auto chat-lock triggered by pattern detection of phone numbers, UPI IDs, emails in messages"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-build-an-admin-dashboard-accessible-only-via-pre-seeded-credentials-email-panigrahianita729-gmail-com-password-123456789-anita-admin-can-view-full-candidate-details-including-real-phone-numbers-add-candidates-manually-approve-reject-profiles-monitor-payments-block-suspend-accounts-admin-registration-via-signup-must-be-blocked-admin-must-not-be-able-to-read-any-chat-message-content",
+      "title": "Build an Admin dashboard accessible only via pre-seeded credentials (email: panigrahianita729@gmail.com, password: 123456789@anita). Admin can: view full candidate details including real phone numbers, add candidates manually, approve/reject profiles, monitor payments, block/suspend accounts. Admin registration via signup must be blocked. Admin must NOT be able to read any chat message content.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-user-dashboard-where-users-can-edit-their-profile-upload-photos-view-ai-ranked-matches-like-reject-profiles-view-matched-users-unlock-chats-via-payment-view-chat-and-see-payment-history",
+      "title": "Build a User dashboard where users can: edit their profile, upload photos, view AI-ranked matches, like/reject profiles, view matched users, unlock chats via payment, view chat, and see payment history.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-display-smart-match-service-charges-on-the-platform-view-candidate-phone-number-250-home-visit-550-rishta-finalization-1000-after-ring-ceremony-15-000-after-marriage-completion-15-000-include-mediator-contact-number-6370081492-on-relevant-pages",
+      "title": "Display Smart Match Service Charges on the platform: View Candidate Phone Number ₹250, Home Visit ₹550, Rishta Finalization ₹1000, After Ring Ceremony ₹15,000, After Marriage Completion ₹15,000. Include mediator contact number 6370081492 on relevant pages.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-warm-traditional-indian-matrimonial-visual-theme-rich-saffron-gold-ivory-color-palette-elegant-serif-typography-ornamental-design-accents-and-a-layout-that-conveys-trust-and-cultural-heritage-enforce-consistently-across-all-pages-including-landing-dashboard-match-cards-and-admin-panel",
+      "title": "Apply a warm, traditional Indian matrimonial visual theme: rich saffron/gold/ivory color palette, elegant serif typography, ornamental design accents, and a layout that conveys trust and cultural heritage. Enforce consistently across all pages including landing, dashboard, match cards, and admin panel.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-user-registration-with-mandatory-phone-number-field-and-mock-otp-phone-verification-if-phone-number-is-not-provided-registration-must-be-blocked-optional-email-field-with-mock-email-otp-if-provided-mock-otp-should-always-be-123456-for-testing",
+      "title": "Implement user registration with mandatory phone number field and mock OTP phone verification. If phone number is not provided, registration must be blocked. Optional email field with mock email OTP if provided. Mock OTP should always be '123456' for testing.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-detailed-user-profile-system-with-the-following-sections-personal-details-full-name-gender-date-of-birth-with-auto-age-calculation-height-weight-religion-caste-sub-caste-gotra-mother-tongue-marital-status-state-district-city-manglik-status-education-job-qualification-job-type-company-position-work-location-monthly-salary-annual-income-family-details-father-name-occupation-income-phone-mother-name-occupation-income-phone-number-of-brothers-number-of-sisters-family-type-family-status-and-an-optional-horoscope-file-upload-store-all-fields-in-the-backend",
+      "title": "Build a detailed user profile system with the following sections: Personal Details (full name, gender, date of birth with auto age calculation, height, weight, religion, caste, sub-caste, gotra, mother tongue, marital status, state/district/city, manglik status); Education & Job (qualification, job type, company, position, work location, monthly salary, annual income); Family Details (father name/occupation/income/phone, mother name/occupation/income/phone, number of brothers, number of sisters, family type, family status); and an optional horoscope file upload. Store all fields in the backend.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-photo-upload-system-requiring-a-minimum-of-4-photos-before-a-profile-becomes-visible-to-other-users-apply-client-side-image-compression-on-upload-profile-browsability-must-be-gated-on-having-at-least-4-uploaded-and-approved-photos-users-should-be-able-to-upload-view-and-delete-their-own-photos",
+      "title": "Implement a photo upload system requiring a minimum of 4 photos before a profile becomes visible to other users. Apply client-side image compression on upload. Profile browsability must be gated on having at least 4 uploaded and approved photos. Users should be able to upload, view, and delete their own photos.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-an-ai-compatibility-scoring-engine-in-the-backend-that-computes-a-compatibility-percentage-between-two-users-based-on-age-compatibility-religion-caste-match-gotra-compatibility-horoscope-match-availability-location-preference-education-level-income-compatibility-and-family-background-the-backend-must-return-ranked-match-suggestions-for-each-user-sorted-by-compatibility-score-descending",
+      "title": "Build an AI compatibility scoring engine in the backend that computes a compatibility percentage between two users based on: age compatibility, religion & caste match, gotra compatibility, horoscope match availability, location preference, education level, income compatibility, and family background. The backend must return ranked match suggestions for each user sorted by compatibility score descending.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-like-reject-system-where-users-can-like-or-reject-profile-suggestions-shown-in-the-matches-section-when-two-users-have-mutually-liked-each-other-a-match-is-created-both-users-should-see-the-match-appear-in-their-matched-users-list-previously-rejected-profiles-should-not-reappear-in-suggestions",
+      "title": "Implement a Like/Reject system where users can like or reject profile suggestions shown in the matches section. When two users have mutually liked each other, a Match is created. Both users should see the match appear in their matched users list. Previously rejected profiles should not reappear in suggestions.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-payment-gated-chat-after-a-mutual-match-display-a-payment-prompt-requiring-each-user-to-pay-200-via-mock-upi-to-unlock-the-chat-support-mock-upi-ids-8456916064-ybl-and-6370081492-ybl-chat-is-enabled-only-after-both-users-have-completed-payment-store-all-transaction-records-with-payment-status-and-display-them-in-the-user-s-payment-history-section",
+      "title": "Implement payment-gated chat: after a mutual match, display a payment prompt requiring each user to pay ₹200 via mock UPI to unlock the chat. Support mock UPI IDs 8456916064@ybl and 6370081492@ybl. Chat is enabled only after both users have completed payment. Store all transaction records with payment status and display them in the user's payment history section.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-secure-chat-system-for-matched-and-payment-verified-users-implement-auto-lock-logic-if-a-sent-message-is-detected-to-contain-a-phone-number-upi-id-or-email-address-instantly-lock-the-chat-thread-display-a-warning-to-the-sender-and-create-an-admin-notification-the-notification-must-not-include-the-message-content-only-metadata-user-ids-timestamp-reason-admin-sees-locked-chat-entries-in-the-locked-chats-monitor-without-any-message-text",
+      "title": "Build a secure chat system for matched and payment-verified users. Implement auto-lock logic: if a sent message is detected to contain a phone number, UPI ID, or email address, instantly lock the chat thread, display a warning to the sender, and create an admin notification. The notification must not include the message content — only metadata (user IDs, timestamp, reason). Admin sees locked chat entries in the Locked Chats Monitor without any message text.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-phone-number-privacy-enforcement-all-candidate-phone-numbers-must-be-blurred-hidden-in-the-ui-and-never-returned-in-plain-text-from-the-backend-by-default-phone-numbers-are-revealed-only-after-the-requesting-user-has-made-an-approved-payment-for-the-view-candidate-phone-number-service-250-backend-must-enforce-authorization-before-returning-plain-text-phone-numbers",
+      "title": "Implement phone number privacy enforcement: all candidate phone numbers must be blurred/hidden in the UI and never returned in plain text from the backend by default. Phone numbers are revealed only after the requesting user has made an approved payment for the 'View Candidate Phone Number' service (₹250). Backend must enforce authorization before returning plain-text phone numbers.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "User registration with mandatory phone OTP verification and optional email OTP",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Detailed user profile system (personal, education/job, family details, horoscope upload, manglik status)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Photo upload system: minimum 4 photos mandatory, image compression, secure storage",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "AI compatibility scoring engine based on age, religion, caste, gotra, location, education, income, family background",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Like/reject system with mutual match detection",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Payment-gated chat: ₹200 per user to unlock chat after mutual like, mock UPI integration",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Encrypted real-time chat with auto-lock if contact details shared, admin notified without message content",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Admin dashboard: add candidates, approve/reject profiles, view phone numbers, monitor payments, suspend accounts — cannot read chats",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "User dashboard: edit profile, view matches, like/reject, unlock chats, payment history",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Pre-seeded admin account (panigrahianita729@gmail.com), role-based access control, JWT auth, bcrypt, rate limiting, XSS/CSRF protection",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Implement user registration with mandatory phone number field and mock OTP phone verification. If phone number is not provided, registration must be blocked. Optional email field with mock email OTP if provided.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Build a detailed user profile system with sections: Personal Details (full name, gender, date of birth with auto age calculation, height, weight, religion, caste, sub-caste, gotra, mother tongue, marital status, state/district/city, manglik status), Education & Job (qualification, job type, company, position, work location, monthly salary, annual income), Family Details (father name/occupation/income/phone, mother name/occupation/income/phone, brothers, sisters, family type, family status), and optional horoscope file upload.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Implement a photo upload system requiring a minimum of 4 photos before a profile becomes visible to others. Apply image compression on upload. Profile browsability is gated on having at least 4 approved photos.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Build an AI compatibility scoring engine in the backend that computes a compatibility percentage between two users based on: age compatibility, religion & caste match, gotra compatibility, horoscope match, location preference, education level, income compatibility, and family background. Return ranked match suggestions for each user.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Implement a Like/Reject system where users can like or reject profile suggestions. When two users mutually like each other, a Match is created and both users are notified.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Implement payment-gated chat: after a mutual match, show a system message prompting payment. Each user must pay ₹200 (mock UPI) to unlock chat. After payment confirmed, chat is enabled. Support mock UPI IDs: 8456916064@ybl and 6370081492@ybl. Store transaction history and payment status.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Build a secure chat system for matched and payment-verified users. Implement auto-lock logic: if a message contains a phone number, UPI ID, email, or contact details, instantly lock the chat, display a warning to the user, and notify the admin — without exposing message content to admin.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Implement phone number privacy: all candidate phone numbers must always appear blurred/hidden in the UI and API responses by default. Phone numbers are revealed only after the user has made an approved payment for 'View Candidate Phone Number' (₹250). Backend must enforce this — phone numbers never sent in plain text without authorization.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Matrimonial Platform",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,189 @@
+{
+  "kind": "build_request",
+  "title": "Implement remaining core features: OTP verification, detailed profiles, photo uploads, AI scoring, like/match, payment-gated chat, encrypted chat, and phone privacy",
+  "projectName": "Vivah Connect",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-13",
+      "text": "Implement user registration with mandatory phone number field and mock OTP phone verification. If phone number is not provided, registration must be blocked. Optional email field with mock email OTP if provided. Mock OTP should always be '123456' for testing.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Implement user registration with mandatory phone number field and mock OTP phone verification. If phone number is not provided, registration must be blocked."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Registration form requires a phone number field; submitting without it shows an error and blocks progression",
+        "A mock OTP (123456) is sent to the provided phone number and must be verified before completing registration",
+        "If an optional email is provided, a mock email OTP (123456) is also requested and must be verified",
+        "Users who skip phone number cannot proceed past step 1 of registration"
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Build a detailed user profile system with the following sections: Personal Details (full name, gender, date of birth with auto age calculation, height, weight, religion, caste, sub-caste, gotra, mother tongue, marital status, state/district/city, manglik status); Education & Job (qualification, job type, company, position, work location, monthly salary, annual income); Family Details (father name/occupation/income/phone, mother name/occupation/income/phone, number of brothers, number of sisters, family type, family status); and an optional horoscope file upload. Store all fields in the backend.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Build a detailed user profile system with sections: Personal Details",
+          "Education & Job",
+          "Family Details",
+          "optional horoscope file upload"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Profile editing form in the user dashboard exposes all Personal Details fields with auto-calculated age from date of birth",
+        "Education & Job section captures qualification, job type, company, position, work location, monthly salary, and annual income",
+        "Family Details section captures father/mother details including phone, number of brothers/sisters, family type, and family status",
+        "Optional horoscope file upload is available and stored securely",
+        "All saved profile data persists across sessions and is retrievable from the backend"
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Implement a photo upload system requiring a minimum of 4 photos before a profile becomes visible to other users. Apply client-side image compression on upload. Profile browsability must be gated on having at least 4 uploaded and approved photos. Users should be able to upload, view, and delete their own photos.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Implement a photo upload system requiring a minimum of 4 photos before a profile becomes visible to others. Apply image compression on upload."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can upload photos from the profile section; uploaded images are compressed client-side before storage",
+        "A clear indicator shows how many photos have been uploaded out of the required 4 minimum",
+        "Profiles with fewer than 4 photos are not shown in match suggestions to other users",
+        "Users can delete their own photos; if deletion drops count below 4, profile is hidden from browsing again",
+        "Admin can see all uploaded photos when reviewing candidate profiles"
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "text": "Build an AI compatibility scoring engine in the backend that computes a compatibility percentage between two users based on: age compatibility, religion & caste match, gotra compatibility, horoscope match availability, location preference, education level, income compatibility, and family background. The backend must return ranked match suggestions for each user sorted by compatibility score descending.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Build an AI compatibility scoring engine in the backend that computes a compatibility percentage between two users based on: age compatibility, religion & caste match, gotra compatibility, horoscope match, location preference, education level, income compatibility, and family background."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes a query that returns a ranked list of compatible profiles for the calling user",
+        "Each result includes a compatibility score (0–100%) computed from the defined factors",
+        "Match suggestions in the user dashboard display the compatibility percentage prominently on each match card",
+        "Profiles are sorted by compatibility score, highest first",
+        "Gotra incompatibility (same gotra) reduces the score significantly"
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "text": "Implement a Like/Reject system where users can like or reject profile suggestions shown in the matches section. When two users have mutually liked each other, a Match is created. Both users should see the match appear in their matched users list. Previously rejected profiles should not reappear in suggestions.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Implement a Like/Reject system where users can like or reject profile suggestions. When two users mutually like each other, a Match is created and both users are notified."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Like and Reject buttons are present on each match suggestion card",
+        "Liking a user who has already liked you creates a mutual match and both users see it in their matches list",
+        "Rejected profiles do not reappear in the suggestions list",
+        "Match creation is persisted in the backend",
+        "Users can view their list of mutual matches in the dashboard"
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "text": "Implement payment-gated chat: after a mutual match, display a payment prompt requiring each user to pay ₹200 via mock UPI to unlock the chat. Support mock UPI IDs 8456916064@ybl and 6370081492@ybl. Chat is enabled only after both users have completed payment. Store all transaction records with payment status and display them in the user's payment history section.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Implement payment-gated chat: after a mutual match, show a system message prompting payment. Each user must pay ₹200 (mock UPI) to unlock chat.",
+          "Support mock UPI IDs: 8456916064@ybl and 6370081492@ybl."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Matched users who have not paid see a payment prompt with the ₹200 amount and mock UPI IDs displayed",
+        "After a user completes mock payment, their payment is recorded as pending/confirmed in the backend",
+        "Chat interface is unlocked and visible only after both matched users have paid",
+        "Transaction history shows payment amount, date, status, and counterpart for each payment",
+        "Admin payment monitoring dashboard reflects new ₹200 chat unlock transactions"
+      ]
+    },
+    {
+      "id": "REQ-19",
+      "text": "Build a secure chat system for matched and payment-verified users. Implement auto-lock logic: if a sent message is detected to contain a phone number, UPI ID, or email address, instantly lock the chat thread, display a warning to the sender, and create an admin notification. The notification must not include the message content — only metadata (user IDs, timestamp, reason). Admin sees locked chat entries in the Locked Chats Monitor without any message text.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Build a secure chat system for matched and payment-verified users. Implement auto-lock logic: if a message contains a phone number, UPI ID, email, or contact details, instantly lock the chat, display a warning to the user, and notify the admin — without exposing message content to admin."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Chat UI is only accessible to users who are both mutually matched and have both paid ₹200",
+        "Messages are sent and displayed in real time (polling-based acceptable) within the chat thread",
+        "Client-side contact detection flags messages containing phone numbers, UPI IDs, or emails before send",
+        "When contact details are detected, the message is blocked, chat is locked, a warning is shown to the user, and an admin notification record is created",
+        "Admin Locked Chats Monitor shows locked chat entries with metadata only — zero message content visible"
+      ]
+    },
+    {
+      "id": "REQ-20",
+      "text": "Implement phone number privacy enforcement: all candidate phone numbers must be blurred/hidden in the UI and never returned in plain text from the backend by default. Phone numbers are revealed only after the requesting user has made an approved payment for the 'View Candidate Phone Number' service (₹250). Backend must enforce authorization before returning plain-text phone numbers.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Implement phone number privacy: all candidate phone numbers must always appear blurred/hidden in the UI and API responses by default. Phone numbers are revealed only after the user has made an approved payment for 'View Candidate Phone Number' (₹250). Backend must enforce this — phone numbers never sent in plain text without authorization."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Phone numbers appear blurred (e.g., '98XXXXXX12') in all match cards and profile views by default",
+        "A 'View Phone Number - ₹250' button is displayed next to blurred numbers",
+        "After mock payment of ₹250 is confirmed, the backend returns the plain-text phone number for that specific candidate only",
+        "Backend rejects plain-text phone number requests from users who have not paid for that specific candidate",
+        "Admin dashboard continues to show full plain-text phone numbers regardless (admin privilege)"
+      ]
+    }
+  ],
+  "constraints": [
+    "All Motoko logic must remain in the single backend/main.mo actor file",
+    "Do not modify any files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
+    "Admin must never be able to read chat message content — only metadata",
+    "Phone numbers must never be returned in plain text from backend without payment authorization",
+    "Maintain the existing saffron/gold/ivory visual theme across all new UI components"
+  ],
+  "nonGoals": [
+    "Real UPI or payment gateway integration — mock payments only",
+    "Real SMS OTP delivery — mock OTP (123456) only",
+    "WebSocket-based real-time chat — polling is acceptable",
+    "Third-party AI/ML service integrations for compatibility scoring",
+    "Internet Identity changes or new auth providers"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

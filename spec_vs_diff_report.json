@@ -1,0 +1,125 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-28T14:33:18.463Z",
+  "summary": "The diff implements the majority of the requested features (REQ-13 through REQ-20) primarily using localStorage-based frontend logic rather than the Motoko backend. Most functional requirements are present in the UI layer. Key gaps include: the backend (main.mo) shows no new Motoko logic for any of the new features; the LockedChat admin view exposes message text fields in the data model; and the backend phone number privacy enforcement is absent since all logic lives client-side.",
+  "missing_requirements": [
+    {
+      "id": "REQ-13",
+      "requirement": "All Motoko logic must remain in the single backend/main.mo actor file. Registration, OTP verification, and phone number storage should have backend enforcement.",
+      "reason": "backend/main.mo shows no new registration, OTP, or phone verification logic. All registration and OTP handling is implemented purely in frontend localStorage hooks. The constraint requires all Motoko logic in main.mo.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "requirement": "Store all profile fields in the backend (Motoko actor). All saved profile data must persist in the backend and be retrievable from it.",
+      "reason": "backend/main.mo has no new profile storage functions. All profile data is stored in browser localStorage only, not in the IC canister backend.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/lib/localStorage.ts"
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "requirement": "Store photos in the backend. Admin can see all uploaded photos when reviewing candidate profiles.",
+      "reason": "backend/main.mo has no photo storage or retrieval functions added. Photos are stored in localStorage. The constraint requires backend storage via main.mo.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/lib/localStorage.ts"
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "requirement": "Backend must expose a query that returns ranked match suggestions computed in Motoko with compatibility scoring.",
+      "reason": "backend/main.mo has no compatibility scoring logic or match suggestion queries. All scoring logic is implemented client-side in localStorage/useQueries hooks.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "requirement": "Match creation must be persisted in the backend (Motoko actor).",
+      "reason": "backend/main.mo has no like/reject or match persistence logic. All like/match data is in localStorage only.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/lib/localStorage.ts"
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "requirement": "Store all transaction records with payment status in the backend. Admin payment monitoring dashboard must reflect backend-stored transactions.",
+      "reason": "backend/main.mo has no payment recording or transaction storage logic for the chat unlock feature. All payment data is localStorage-only.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/lib/localStorage.ts"
+      ]
+    },
+    {
+      "id": "REQ-19",
+      "requirement": "Admin notification must not include message content only metadata. The LockedChat model must never store message text. Backend must have locked chat and admin notification logic.",
+      "reason": "The Message interface in localStorage.ts includes a text field and messages are stored with full content. Additionally backend/main.mo has no locked chat or admin notification logic.",
+      "evidence": [
+        "frontend/src/lib/localStorage.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-20",
+      "requirement": "Backend must enforce authorization before returning plain-text phone numbers. Phone numbers must never be returned in plain text from backend without payment authorization.",
+      "reason": "backend/main.mo has no phone number privacy enforcement. All phone reveal logic is client-side in localStorage. The UserProfile type stores plain-text phone numbers in localStorage accessible without any payment check at the data layer.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/lib/localStorage.ts",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Stripe payment integration scaffolding (setStripeConfiguration, createCheckoutSession, getStripeSessionStatus) present in backend/main.mo",
+      "reason": "The build request explicitly states real UPI or payment gateway integration as a non-goal and only mock payments are requested. No Stripe integration was requested.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Invite links and RSVP system (generateInviteCode, submitRSVP, getAllRSVPs, getInviteCodes) in backend/main.mo",
+      "reason": "No invite link or RSVP functionality was requested in any of REQ-13 through REQ-20.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "ServicesPage route added to the application router",
+      "reason": "A dedicated /services route and ServicesPage component were added which was not part of the requirements REQ-13 through REQ-20.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.82,
+  "changed_files": [
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/src/App.tsx",
+    "frontend/src/components/admin/CandidatesManagement.tsx",
+    "frontend/src/components/admin/LockedChatsMonitor.tsx",
+    "frontend/src/components/admin/PaymentMonitoring.tsx",
+    "frontend/src/components/dashboard/ChatsSection.tsx",
+    "frontend/src/components/dashboard/MatchesSection.tsx",
+    "frontend/src/components/dashboard/PaymentsSection.tsx",
+    "frontend/src/components/dashboard/ProfileSection.tsx",
+    "frontend/src/components/layout/Header.tsx",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/lib/localStorage.ts",
+    "frontend/src/lib/utils.ts",
+    "frontend/src/pages/AdminPage.tsx",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/RegisterPage.tsx",
+    "project_state.json"
+  ]
+}
